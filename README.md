@@ -1,6 +1,7 @@
 # SAP-BW4HANA-HANA-SAC-Enterprise-Analytics
 Enterprise SAP BW/4HANA implementation for Sales Order Quanity and Value analytics with real-time  SAP Analytics Cloud dashboards. Features LSA++ architecture, S/4HANA CDS views,  AMDP transformations, Composite Providers (actuals + historical + forecast data), and SAC CORS-enabled live connectivity. Delivered 22x faster queries for 5,000+ users.
 
+
 # SAP BW/4HANA Sales Analytics Data Warehouse (Enterprise Implementation)
 
 ## Project Overview
@@ -231,17 +232,16 @@ ERP transactional tables
 
 ## Data Engineering Implementation
 
-The project includes several transformation and data engineering components implemented in SAP BW/4HANA.
+- The project includes several transformation and data engineering components implemented in SAP BW/4HANA.
 
 Key techniques used:
 
 From your documentation:
 
-ZI_SALES_HDR_FULL
-
 Purpose: Extract Sales Header data from SAP S/4HANA.
 
 - ABAP CDS Views for data extraction
+- ZI_SALES_HDR_FULL
 @AbapCatalog.sqlViewName: 'ZV_SALES_HDR'
 @Analytics.dataCategory: #FACT
 @AccessControl.authorizationCheck: #NOT_REQUIRED
@@ -258,7 +258,7 @@ as select from vbak
         waerk        as Currency
 }
  
-ZI_SALES_ITM_DAN
+- ZI_SALES_ITM_DAN
 
 @AbapCatalog.sqlViewName: 'ZV_SALES_ITM'
 @Analytics.dataCategory: #FACT
@@ -274,11 +274,10 @@ as select from vbap
         netwr     as NetValue
 }
 
-- AMDP transformations for HANA pushdown
+# AMDP transformations for HANA pushdown
 
-Your documentation explicitly mentions:
 
-"Transformation Item Rules Routine AMDP Method for Base Unit Conversion"
+- Transformation Item Rules Routine AMDP Method for Base Unit Conversion
 
 METHOD base_unit_conversion
 BY DATABASE PROCEDURE
@@ -294,15 +293,15 @@ FROM :intab;
 
 ENDMETHOD;
 
-- Lookup transformations for master data enrichment
-Transformation Item Rules LookUp for Country-Land1
+# Lookup transformations for master data enrichment
+- Transformation Item Rules LookUp for Country-Land1
 SELECT land1
 INTO RESULT
 FROM kna1
 WHERE kunnr = SOURCE_FIELDS-customer.
 
-- ABAP routines for custom logic
-Transformation Item Rules Routine ABAP Method for Update Date
+# ABAP routines for custom logic
+- Transformation Item Rules Routine ABAP Method for Update Date
 METHOD update_date_routine.
 
 DATA lv_date TYPE sy-datum.
@@ -313,7 +312,7 @@ RESULT = lv_date.
 
 ENDMETHOD.
 
-- Data cleansing and validation
-Data cleansing routine
+# Data cleansing and validation
+- Data cleansing routine
 REPLACE ALL OCCURRENCES OF REGEX '[^A-Za-z0-9 ]'
 IN RESULT WITH ''.
