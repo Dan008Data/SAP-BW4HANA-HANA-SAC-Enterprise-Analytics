@@ -241,13 +241,13 @@ From your documentation:
 Purpose: Extract Sales Header data from SAP S/4HANA.
 
 - ZI_SALES_HDR_FULL
-@AbapCatalog.sqlViewName: 'ZV_SALES_HDR'
-@Analytics.dataCategory: #FACT
-@AccessControl.authorizationCheck: #NOT_REQUIRED
+@AbapCatalog.sqlViewName: 'ZV_SALES_HDR'<br>
+@Analytics.dataCategory: #FACT<br>
+@AccessControl.authorizationCheck: #NOT_REQUIRED<br><br>
 
-define view ZI_SALES_HDR_FULL
-as select from vbak
-{
+define view ZI_SALES_HDR_FULL<br>
+as select from vbak<br>
+{<br>
     key vbeln        as SalesDocument,
         erdat        as CreatedDate,
         kunnr        as Customer,
