@@ -235,12 +235,11 @@ ERP transactional tables
 - The project includes several transformation and data engineering components implemented in SAP BW/4HANA.
 
 Key techniques used:
-
+# ABAP CDS Views for data extraction
 From your documentation:
 
 Purpose: Extract Sales Header data from SAP S/4HANA.
 
-- ABAP CDS Views for data extraction
 - ZI_SALES_HDR_FULL
 @AbapCatalog.sqlViewName: 'ZV_SALES_HDR'
 @Analytics.dataCategory: #FACT
