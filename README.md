@@ -1,357 +1,319 @@
 # SAP-BW4HANA-HANA-SAC-Enterprise-Analytics
 Enterprise SAP BW/4HANA implementation for Sales Order Quanity and Value analytics with real-time  SAP Analytics Cloud dashboards. Features LSA++ architecture, S/4HANA CDS views,  AMDP transformations, Composite Providers (actuals + historical + forecast data), and SAC CORS-enabled live connectivity. Delivered 22x faster queries for 5,000+ users.
 
-SAP BW/4HANA Sales Analytics Data Warehouse (Enterprise Implementation)
-Project Overview
+# SAP BW/4HANA Sales Analytics Data Warehouse (Enterprise Implementation)
+
+## Project Overview
 
 This repository demonstrates an enterprise-level SAP BW/4HANA data warehouse implementation for Sales Analytics.
 
-The solution follows SAP’s LSA++ (Layered Scalable Architecture) methodology and integrates transactional and master data from SAP ERP using modern extraction techniques such as ABAP CDS Views and Operational Data Provisioning (ODP).
+The solution follows SAP’s **LSA++ (Layered Scalable Architecture)** approach and integrates transactional and master data from SAP ERP systems using modern data extraction techniques such as **ABAP CDS Views and Operational Data Provisioning (ODP)**.
 
-The project models Sales Header and Sales Item data and delivers enterprise analytical reporting using BW Queries and SAP Analytics Cloud.
+The project models sales header and sales item data and delivers analytical reporting through BW Queries and SAP Analytics Cloud integration.
 
-The implementation reflects the type of solutions delivered by global SAP consulting firms such as:
+This architecture reflects the type of solutions delivered by global SAP consulting firms such as Accenture, Deloitte, and Capgemini.
 
-Accenture
+---
 
-Deloitte
+## Business Scenario
 
-Capgemini
+Organizations require consolidated reporting across multiple sales dimensions including:
 
-Business Scenario
+- Customer
+- Product
+- Sales Organization
+- Distribution Channel
+- Fiscal Period
+- Sales Revenue and Quantity
 
-Organizations require consolidated reporting across multiple sales dimensions to support operational and strategic decision making.
+The solution provides a **centralized analytics layer** for sales order reporting and performance analysis.
 
-The analytics platform enables reporting across:
+---
 
-Customer
+## Technology Stack
 
-Product
+| Technology | Description |
+|---|---|
+| SAP BW/4HANA | Enterprise Data Warehouse |
+| SAP HANA | In-memory database |
+| ABAP CDS Views | Data modeling and extraction |
+| Operational Data Provisioning (ODP) | Data extraction framework |
+| ADSO | Data persistence layer |
+| Composite Providers | Virtual semantic layer |
+| BW Queries | Analytical reporting |
+| SAP Analytics Cloud | Visualization and dashboards |
 
-Sales Organization
+---
 
-Distribution Channel
-
-Fiscal Period
-
-Country
-
-Company Code
-
-Sales Revenue
-
-Sales Quantity
-
-The solution provides a centralized enterprise analytics platform capable of delivering consistent and trusted sales KPIs.
-
-Technology Stack
-Technology	Description
-SAP BW/4HANA	Enterprise Data Warehouse
-SAP HANA	In-memory database
-ABAP CDS Views	Data modeling and extraction
-Operational Data Provisioning (ODP)	Data extraction framework
-Advanced DataStore Objects (ADSO)	Data persistence layer
-Composite Providers	Semantic data modeling
-BW Queries	Analytical reporting
-SAP Analytics Cloud	Cloud-based dashboards
-High-Level Architecture
+## High-Level Architecture
 
 ERP Tables → CDS Views → ODP Extraction → BW DataSource → InfoSource → ADSO → Composite Provider → BW Query → SAP Analytics Cloud
 
-Enterprise Architecture Diagram
-LSA++ Data Flow Architecture
+---
 
-The project follows SAP’s LSA++ layered architecture, which separates the warehouse into scalable logical layers.
+## LSA++ Data Flow Architecture
 
-Implemented layers include:
+![LSA Architecture](images/architecture/sale-item-lsa-dataflow.png)
 
-Source Layer
+The architecture follows the **LSA++ layered architecture** which includes:
 
-Extraction Layer
+- Staging Layer
+- Harmonization Layer
+- Propagation Layer
+- Reporting Layer
 
-Staging Layer
+---
 
-Harmonization Layer
+# Data Extraction Layer
 
-Reporting Layer
+Sales data is extracted from SAP ERP using **ABAP CDS Views exposed via ODP**.
 
-Semantic Layer
+## Sources
 
-Analytics Layer
+| Source | Description |
+|------|------|
+| CDS Views | Sales Header & Sales Item |
+| Open ODS Views | Historical Sales |
+| SDA | Forecast Sales |
+| HANA Calculation Views | Material attributes |
 
-Data Extraction Layer
+## Source ERP Tables
 
-Sales data is extracted from SAP ERP using ABAP CDS Views exposed through ODP.
+| Table | Description |
+|-----|-----|
+| VBAK | Sales Document Header |
+| VBAP | Sales Document Item |
+| KNA1 | Customer Master |
+| MARA | Material Master |
+| T001 | Company Code |
 
-Sources
-Source	Description
-CDS Views	Sales Header & Sales Item
-Open ODS Views	Historical Sales
-SDA	Forecast Sales
-HANA Calculation Views	Material attributes
-Source ERP Tables
-Table	Description
-VBAK	Sales Document Header
-VBAP	Sales Document Item
-KNA1	Customer Master
-MARA	Material Master
-T001	Company Code
-CDS View Objects
-CDS View	Purpose
-ZI_SALES_HDR_FULL	S4HANA Sales & Distribution Sales Header
-ZI_SALES_ITM_DAN	S4HANA Sales & Distribution Item
-Business Requirements
+## CDS View Objects
 
-Two major analytical use cases were implemented.
+| CDS View | Purpose |
+|---|---|
+| ZI_SALES_HDR_FULL | S4HANA Sales & Distribution Sales Header |
+| ZI_SALES_ITM_DAN  | S4HANA Sales & Distribution Item |
 
-Sales Item Analytics
-Key Metrics
+# Business Requirements
 
-Sales Order Quantity
+Two main analytics use cases were implemented.
 
-Sales Order Value
+## Sales Item Analytics
 
-Net Value of Orders
+Metrics required:
 
-Dimensions
+- Sales Order Quantity
+- Sales Order Value
 
-Customer
+Dimensions:
 
-Material
+- Customer
+- Month
+- Year
+- Material
+- Material Type
+- Material Group
+- Sales Organization
+- Distribution Channel
 
-Material Type
+---
 
-Material Group
+## Sales Header Analytics
 
-Sales Organization
+Metrics required:
 
-Distribution Channel
+- Number of Sales Orders
 
-Fiscal Year
+Dimensions:
 
-Month
+- Customer
+- Month
+- Year
+- Country
+- Company Code
+- Distribution Channel
 
-Sales Header Analytics
-Key Metrics
+# Data Engineering Requirements
 
-Number of Sales Orders
+Several enterprise-level transformation requirements were implemented to ensure high data quality and consistent reporting.
 
-Dimensions
+# Base Unit Conversion
 
-Customer
+Sales quantities originating from different units of measure must be standardized.
 
-Country
+A transformation routine using AMDP (ABAP Managed Database Procedure) converts cumulative quantities into a Base Unit of Measure during the transformation process.
 
-Company Code
+This ensures consistent quantity reporting across materials.
 
-Distribution Channel
+# Removal of Special Characters
 
-Fiscal Year
-
-Month
-
-Data Engineering Requirements
-
-Several enterprise transformation requirements were implemented to ensure high data quality and reliable analytics.
-
-Base Unit Conversion
-
-Sales quantities originating from different units of measure were standardized.
-
-A high-performance AMDP transformation was implemented to convert cumulative order quantities into a Base Unit of Measure during the transformation process.
-
-This ensures consistent reporting across materials.
-
-Removal of Special Characters
-
-Source data occasionally contained special characters and formatting inconsistencies.
+Incoming source data occasionally contained special characters and formatting inconsistencies.
 
 Transformation routines were implemented to:
 
-Cleanse text fields
+- Cleanse text fields
 
-Remove invalid characters
+- Remove invalid characters
 
-Standardize field formats
+- Standardize string formats
 
 This improves data quality and reporting reliability.
 
-DataSource Enhancements
+# DataSource Enhancements
 
-Standard DataSources were enhanced to support additional analytics requirements.
+Standard DataSources were enhanced to support additional business logic required for analytics.
 
 Enhancements include:
 
-Additional reporting attributes
+- Additional attributes required for reporting
 
-Data enrichment from master data
+- Lookup transformations
 
-Custom extraction logic
+- Data enrichment from master data tables
 
-Transformation Logic
+# Transformation Logic
 
-The project implemented several transformation techniques.
+The project implemented several transformation rules including:
 
-Lookup Transformations
+# Lookup Transformations
 
-Used to enrich transactional data with master data attributes.
+Used to enrich transactional data with master data attributes:
 
-Examples include:
+- Country lookup from customer master
 
-Country lookup from Customer Master
+- Product category lookup from material group
 
-Product category lookup from Material Group
-
-ABAP Transformation Routines
+# ABAP Transformation Routines
 
 Custom ABAP routines were implemented for:
 
-Update date logic
+- Update date logic
 
-Field derivations
+- Data cleansing
 
-Data cleansing operations
+- Field derivations
 
-AMDP Transformation Procedures
+# AMDP Transformation Procedures
 
 High-performance HANA-based transformations implemented using AMDP for:
 
-Base unit conversion
+- Base unit conversion
 
-Processing large transactional datasets
+- Large dataset processing
 
-Enterprise Data Architecture
+# Enterprise Data Architecture
 
-The project follows the LSA++ architecture commonly implemented in enterprise SAP BW/4HANA environments.
+The project follows the **LSA++ architecture** commonly implemented in enterprise SAP BW/4HANA projects.
 
-Layer	Object
-Source Layer	ERP Tables
-Extraction Layer	CDS Views + ODP DataSources
-Staging Layer	ADSO (ZS_SDHDR5, ZS_SDITM4)
-Harmonization Layer	InfoSources (ZD_ISHDR5, ZD_ISITM4)
-Reporting Layer	ADSO (ZD_SDHDR6, ZD_SDITM4)
-Semantic Layer	Composite Providers (ZV_SDHDR6, ZV_SDITM4)
-Analytics Layer	BW Queries (ZQ_ZV_SDHD6_001, ZQ_ZV_SDITM4)
-Reporting Layer
+Layered architecture:
 
-Reporting objects include:
+Source Layer
+ERP transactional tables
 
-Composite Providers
-Object	Description
-ZV_SDHDR6	Sales Header Reporting View
-ZV_SDITM4	Sales Item Reporting View
-BW Queries
-Query	Purpose
-ZQ_ZV_SDHD6_001	Sales Header Analytics
-ZQ_ZV_SDITM4	Sales Item Analytics
-SAP Analytics Cloud Integration
+| Extraction Layer
+| CDS Views + ODP DataSources
 
-The BW Queries were exposed to SAP Analytics Cloud using Live Connection.
+| Staging Layer
+| ADSO (ZS_SDHDR5, ZS_SDITM4)
 
-Benefits include:
+| Harmonization Layer
+| InfoSources (ZD_ISHDR5, ZD_ISITM4)
 
-Real-time analytics
+| Reporting Layer
+| ADSO (ZD_SDHDR6, ZD_SDITM4)
 
-No data replication
+| Semantic Layer
+| Composite Providers (ZV_SDHDR6, ZV_SDITM4)
 
-Secure connectivity
+| Analytics Layer
+| BW Queries (ZQ_ZV_SDHD6_001, ZQ_ZV_SDITM4)
 
-Cloud-based dashboards
 
-Implementation Phases
+## Data Engineering Implementation
 
-The project followed a standard SAP BW/4HANA implementation lifecycle.
+The project includes several transformation and data engineering components implemented in SAP BW/4HANA.
 
-Phase 1 — Requirements Gathering
+Key techniques used:
 
-Business stakeholders defined reporting requirements for:
+From your documentation:
 
-Sales order analytics
+ZI_SALES_HDR_FULL
 
-Customer performance
+Purpose: Extract Sales Header data from SAP S/4HANA.
 
-Product performance
+- ABAP CDS Views for data extraction
+@AbapCatalog.sqlViewName: 'ZV_SALES_HDR'
+@Analytics.dataCategory: #FACT
+@AccessControl.authorizationCheck: #NOT_REQUIRED
 
-Regional sales reporting
+define view ZI_SALES_HDR_FULL
+as select from vbak
+{
+    key vbeln        as SalesDocument,
+        erdat        as CreatedDate,
+        kunnr        as Customer,
+        vkorg        as SalesOrganization,
+        vtweg        as DistributionChannel,
+        netwr        as NetValue,
+        waerk        as Currency
+}
+ 
+ZI_SALES_ITM_DAN
 
-Deliverables:
+@AbapCatalog.sqlViewName: 'ZV_SALES_ITM'
+@Analytics.dataCategory: #FACT
 
-Business requirement specification
+define view ZI_SALES_ITM_DAN
+as select from vbap
+{
+    key vbeln     as SalesDocument,
+    key posnr     as ItemNumber,
+        matnr     as Material,
+        kwmeng    as OrderQuantity,
+        vrkme     as SalesUnit,
+        netwr     as NetValue
+}
 
-KPI definitions
+- AMDP transformations for HANA pushdown
 
-Source system analysis
+Your documentation explicitly mentions:
 
-Phase 2 — Data Modeling
+"Transformation Item Rules Routine AMDP Method for Base Unit Conversion"
 
-SAP BW objects were designed using LSA++ architecture.
+METHOD base_unit_conversion
+BY DATABASE PROCEDURE
+FOR HDB
+LANGUAGE SQLSCRIPT
+OPTIONS READ-ONLY.
 
-Objects created:
+outtab =
+SELECT
+    material,
+    orderquantity * conversion_factor AS base_quantity
+FROM :intab;
 
-CDS Views
+ENDMETHOD;
 
-DataSources
+- Lookup transformations for master data enrichment
+Transformation Item Rules LookUp for Country-Land1
+SELECT land1
+INTO RESULT
+FROM kna1
+WHERE kunnr = SOURCE_FIELDS-customer.
 
-InfoSources
+- ABAP routines for custom logic
+Transformation Item Rules Routine ABAP Method for Update Date
+METHOD update_date_routine.
 
-ADSO staging layer
+DATA lv_date TYPE sy-datum.
 
-ADSO reporting layer
+lv_date = sy-datum.
 
-Composite Providers
+RESULT = lv_date.
 
-Phase 3 — Data Transformation
+ENDMETHOD.
 
-Data transformation logic implemented using:
-
-ABAP routines
-
-AMDP procedures
-
-Lookup transformations
-
-Field formulas
-
-Examples:
-
-Base unit conversion
-
-Fiscal year derivation
-
-Order counting
-
-Net value calculations
-
-Country lookup
-
-Product category lookup
-
-Phase 4 — Reporting Layer
-
-Reporting objects developed:
-
-Composite Providers
-
-BW Queries
-
-Query Calculations
-
-Variables and filters
-
-Queries implemented:
-
-ZQ_ZV_SDHD6_001
-
-ZQ_ZV_SDITM4
-
-Phase 5 — Analytics Integration
-
-Integration with SAP Analytics Cloud using Live Connection.
-
-Benefits:
-
-Real-time reporting
-
-No data duplication
-
-Enterprise-grade analytics
+- Data cleansing and validation
+Data cleansing routine
+REPLACE ALL OCCURRENCES OF REGEX '[^A-Za-z0-9 ]'
+IN RESULT WITH ''.
