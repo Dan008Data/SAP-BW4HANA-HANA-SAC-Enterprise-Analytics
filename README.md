@@ -1,4 +1,4 @@
-# SAP-BW4HANA-HANA-SAC-Enterprise-Analytics
+![Screenshot_20260218_180512_VLC (1) (1)](https://github.com/user-attachments/assets/89e54eca-20bb-4d4d-b8fb-87d27d46e3cb)# SAP-BW4HANA-HANA-SAC-Enterprise-Analytics
 
 ![SAP](https://img.shields.io/badge/SAP-BW%2F4HANA-blue)
 ![HANA](https://img.shields.io/badge/SAP-HANA-red)
@@ -115,15 +115,16 @@ Organizations require consolidated reporting across multiple **sales dimensions*
 
 # High-Level Architecture
 
-![Architecture](images/architecture/sap_bw4hana_architecture.png)
+<img width="1264" height="842" alt="Gemini_Generated_Image_v3txmlv3txmlv3tx" src="https://github.com/user-attachments/assets/a9abf1f2-dd33-4c3b-990e-a55a10187026" />
+
 
 ---
 
 ## LSA++ Dataflow
 
-![LSA Dataflow](images/architecture/sale-item-lsa-dataflow.png)
+![Sales Item LSA++ Full Data Flow part ](https://github.com/user-attachments/assets/73c7d78d-a479-4069-a342-fc053642429d)
 
-![Sales Header Dataflow](images/architecture/sales-header-lsa-part1.png)
+
 
 ---
 
@@ -145,11 +146,13 @@ Organizations require consolidated reporting across multiple **sales dimensions*
 
 ### Staging ADSO
 
-![ADSO Staging](images/bw/adso-staging.png)
+<img width="1417" height="882" alt="Sales Item Staging ADSO ZS_SDITM4 " src="https://github.com/user-attachments/assets/e7bbac04-5b76-4d34-9acb-3d5efacbba99" />
+
 
 ### Reporting ADSO
 
-![ADSO Reporting](images/bw/adso-reporting.png)
+<img width="1408" height="887" alt="Sales Item Reporting ADSO ZD_SDITM4 " src="https://github.com/user-attachments/assets/9b7f974d-49a6-4636-a5d5-1d3ce58d6181" />
+
 
 ---
 
@@ -181,6 +184,8 @@ as select from vbak
  vkorg as SalesOrganization
 }
 ```
+<img width="1433" height="717" alt="CDS View Item with Enhanced Field MTART" src="https://github.com/user-attachments/assets/778073c1-04a7-4c85-8372-d52e5af7ceef" />
+
 
 ---
 
@@ -199,9 +204,11 @@ Key techniques used:
 
 # Transformation Rules
 
-![AMDP Transformation](images/transformations/amdp-base-unit.png)
 
-![Lookup Transformation](images/transformations/lookup-country.png)
+<img width="1432" height="562" alt="Transformation Item Rules Routine AMDP Method for Base Unit Conversion" src="https://github.com/user-attachments/assets/60fd99fe-5b4b-48d3-859d-2a1a49b6f56b" />
+
+<img width="1496" height="527" alt="Transformation Item Rules Lookup for Product Category in Material Group InfoObjects" src="https://github.com/user-attachments/assets/6cd86d6f-cd4f-4534-a54c-35f35b1fcd3c" />
+
 
 ---
 
@@ -236,10 +243,10 @@ Composite Providers combine multiple datasets.
 ---
 
 ## Composite Provider
+<img width="1413" height="823" alt="Composite Provider Sales Item ZV_SDITM4" src="https://github.com/user-attachments/assets/0767cd57-59a3-4620-bc31-ecc3ae6bda1f" />
 
-![Composite Provider](images/bw/composite-provider.png)
 
-![Composite Provider Preview](images/bw/composite-provider-preview.png)
+<img width="1248" height="312" alt="Composite Provider Sales Item ZV_SDITM4 Data Preview " src="https://github.com/user-attachments/assets/8caac339-fcd1-467f-8333-195c31b077cb" />
 
 ---
 
@@ -256,7 +263,9 @@ BW Queries provide reporting metrics.
 
 ## BW Query
 
-![BW Query](images/reporting/bw-query-sales.png)
+<img width="1418" height="877" alt="Sales Header BW Query ZQ_ZV_SDHD6_001 Sheet Definition" src="https://github.com/user-attachments/assets/fb1c12bb-c869-409c-824d-dfbedbb9b4e1" />
+
+<img width="1862" height="872" alt="BW Query ZQ_ZV_SDHD6_001 Sales Item - Sales Order Reporting Preview" src="https://github.com/user-attachments/assets/a3c9a9c0-b8ce-471e-a165-6a5bb1a9c7e0" />
 
 ---
 
@@ -271,11 +280,13 @@ Benefits:
 - Enterprise security
 - Interactive dashboards
 
+<img width="717" height="786" alt="SAC Live Connection Details" src="https://github.com/user-attachments/assets/1671aef7-0ebe-4ca3-aad2-2797055ab475" />
+
 ---
 
 ## SAC Dashboard
+<img width="1410" height="752" alt="Sac" src="https://github.com/user-attachments/assets/77d6e405-0a7c-4570-9323-f2f2fa974d58" />
 
-![SAC Dashboard](images/sac/sac-dashboard.png)
 
 ---
 
@@ -287,18 +298,75 @@ SAP BW Process Chains automate:
 - ADSO activation
 - Index rebuild
 - Query cache refresh
+![Screenshot_20260218_180512(1) (1)](https://github.com/user-attachments/assets/10860a29-6bd9-4595-a14c-908bdf7fe100)
+
 
 ---
 
 # Repository Structure
 
 ```
-sap-bw4hana-sales-analytics
+sap-bw4hana-hana-sac-enterprise-analytics
 │
 ├── README.md
+│
 ├── docs
-├── images
+│   │
+│   ├── 01-project-overview.md
+│   ├── 02-business-requirements.md
+│   ├── 03-solution-architecture.md
+│   ├── 04-data-architecture-lsa.md
+│   ├── 05-data-extraction-cds.md
+│   ├── 06-data-modeling-bw.md
+│   ├── 07-transformations.md
+│   ├── 08-semantic-layer.md
+│   ├── 09-analytics-layer.md
+│   ├── 10-sac-integration.md
+│   └── 11-process-automation.md
+│
 ├── src
+│   │
+│   ├── cds-views
+│   │   ├── ZI_SALES_HDR_FULL.sql
+│   │   └── ZI_SALES_ITM_DAN.sql
+│   │
+│   ├── transformations
+│   │   ├── amdp-base-unit-conversion.sql
+│   │   ├── lookup-country.sql
+│   │   └── data-cleansing-routine.abap
+│   │
+│   └── bw-objects
+│       ├── adso-modeling.md
+│       ├── composite-provider.md
+│       └── bw-queries.md
+│
+├── images
+│   │
+│   ├── architecture
+│   │   ├── sap_bw4hana_architecture.png
+│   │   ├── sale-item-lsa-dataflow.png
+│   │   └── sales-header-lsa-part1.png
+│   │
+│   ├── bw
+│   │   ├── adso-staging.png
+│   │   ├── adso-reporting.png
+│   │   ├── composite-provider.png
+│   │   └── composite-provider-preview.png
+│   │
+│   ├── transformations
+│   │   ├── amdp-base-unit.png
+│   │   └── lookup-country.png
+│   │
+│   ├── reporting
+│   │   └── bw-query-sales.png
+│   │
+│   └── sac
+│       └── sac-dashboard.png
+│
+└── diagrams
+    └── architecture-diagram.drawio
+<img width="402" height="1321" alt="image" src="https://github.com/user-attachments/assets/55a8d243-3421-4fd5-80a3-cd7e9683ee52" />
+
 ```
 
 ---
