@@ -108,21 +108,12 @@ as select from vbak
     waerk as Currency
 }
 
-# Data Engineering Implementation
-The project includes several enterprise-level data engineering components implemented in SAP BW/4HANA.
+# CDS View Extraction Objects
 
-Key Techniques
-•	ABAP CDS Views for modern data extraction
-•	Delta-enabled loading using ODP
-•	ADSO-based data persistence
-•	Composite Providers for semantic modeling
-•	HANA pushdown transformations using AMDP
-•	Data cleansing routines
-•	Lookup transformations for master data enrichment
-
-# AMDP Transformation Example
-High-performance transformation logic implemented using AMDP (ABAP Managed Database Procedures).
-Base Unit Conversion
+| CDS View | Purpose |
+|---|---|
+| ZI_SALES_HDR_FULL | Sales Header extraction |
+| ZI_SALES_ITM_DAN | Sales Item extraction |
 
 
 
