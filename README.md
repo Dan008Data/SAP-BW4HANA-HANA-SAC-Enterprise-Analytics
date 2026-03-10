@@ -1,5 +1,18 @@
 # SAP-BW4HANA-HANA-SAC-Enterprise-Analytics
-Enterprise SAP BW/4HANA implementation for Sales Order Quanity and Value analytics with real-time  SAP Analytics Cloud dashboards. Features LSA++ architecture, S/4HANA CDS views,  AMDP transformations, Composite Providers (actuals + historical + forecast data), and SAC CORS-enabled live connectivity. Delivered 22x faster queries for 5,000+ users.
+
+Enterprise SAP BW/4HANA implementation for **Sales Order Quantity and Value analytics** with real-time **SAP Analytics Cloud dashboards**.
+
+Features:
+
+- LSA++ architecture
+- S/4HANA CDS views
+- AMDP transformations
+- Composite Providers (actuals + historical + forecast data)
+- SAC CORS-enabled live connectivity
+
+Delivered **22x faster queries for 5,000+ users**.
+
+---
 
 ## Enterprise SAP Data Engineering Project
 
@@ -11,10 +24,10 @@ This repository demonstrates an **enterprise-level SAP BW/4HANA data warehouse i
 
 The solution follows **SAP's LSA++ (Layered Scalable Architecture)** and integrates transactional and master data from **SAP S/4HANA Sales & Distribution (SD)** using modern extraction techniques such as:
 
-- ABAP CDS Views
-- Operational Data Provisioning (ODP)
-- SAP BW/4HANA Data Modeling
-- SAP HANA SQLScript & AMDP
+- ABAP CDS Views  
+- Operational Data Provisioning (ODP)  
+- SAP BW/4HANA Data Modeling  
+- SAP HANA SQLScript & AMDP  
 
 The project models **Sales Header and Sales Item data** and delivers analytical reporting through:
 
@@ -24,6 +37,7 @@ The project models **Sales Header and Sales Item data** and delivers analytical 
 The architecture reflects the type of solutions delivered by enterprise consulting firms such as **Accenture, Deloitte, and Capgemini**.
 
 ---
+
 ## Project Highlights
 
 - Implemented LSA++ architecture in SAP BW/4HANA
@@ -33,6 +47,8 @@ The architecture reflects the type of solutions delivered by enterprise consulti
 - Developed AMDP transformations for HANA pushdown
 - Modeled Composite Providers for semantic analytics
 - Delivered reporting through SAP Analytics Cloud
+
+---
 
 # Business Scenario
 
@@ -71,11 +87,13 @@ Organizations require consolidated reporting across multiple **sales dimensions*
 | Composite Providers | Semantic data modeling |
 | BW Queries | Analytical reporting |
 | SAP Analytics Cloud | Visualization dashboards |
----
-# High-Level Architecture
-<img width="1264" height="842" alt="Gemini_Generated_Image_v3txmlv3txmlv3tx" src="https://github.com/user-attachments/assets/4da65765-9a6e-4ed9-a21e-3ab29fd9710b" />
 
 ---
+
+# High-Level Architecture
+
+![Architecture](https://github.com/user-attachments/assets/4da65765-9a6e-4ed9-a21e-3ab29fd9710b)
+
 ---
 
 # LSA++ Data Architecture
@@ -93,6 +111,15 @@ The solution follows SAP's **LSA++ (Layered Scalable Architecture)** to ensure s
 | Analytics Layer | Reporting | ZQ_ZV_SDHD6_001, ZQ_ZV_SDITM4 |
 
 ---
+
+## ADSO Data Model
+
+![Sales Item Staging ADSO](images/bw/sales-item-staging-adso.png)
+
+![Sales Item Reporting ADSO](images/bw/sales-item-reporting-adso.png)
+
+---
+
 # Source ERP Tables
 
 | Table | Description |
@@ -133,9 +160,15 @@ as select from vbak
     waerk as Currency
 }
 ```
+
+---
+
 # Data Engineering Implementation
+
 The project includes several enterprise-level data engineering components implemented in SAP BW/4HANA.
-Key Techniques
+
+### Key Techniques
+
 - ABAP CDS Views for modern data extraction
 - Delta-enabled loading using ODP
 - ADSO-based data persistence
@@ -144,10 +177,21 @@ Key Techniques
 - Data cleansing routines
 - Lookup transformations for master data enrichment
 
+---
+
+## Transformation Rules
+
+![Transformation Rules](images/transformations/transformation-rules.png)
+
+![AMDP Transformation](images/transformations/amdp-base-unit-conversion.png)
+
+---
+
 # AMDP Transformation Example
-High-performance transformation logic implemented using AMDP (ABAP Managed Database Procedures).
-Base Unit Conversion
-```
+
+High-performance transformation logic implemented using **AMDP (ABAP Managed Database Procedures)**.
+
+```sql
 METHOD base_unit_conversion
 BY DATABASE PROCEDURE
 FOR HDB
@@ -162,20 +206,27 @@ FROM :intab;
 
 ENDMETHOD.
 ```
+
+---
+
 # Lookup Transformation Example
-Lookup logic used to enrich transactional data with master data attributes.
-```
+
+```sql
 SELECT land1
 INTO RESULT
 FROM kna1
 WHERE kunnr = SOURCE_FIELDS-customer.
 ```
+
+---
+
 # Data Cleansing Routine
-Data quality rules implemented to remove invalid characters and standardize data.
-```
+
+```abap
 REPLACE ALL OCCURRENCES OF REGEX '[^A-Za-z0-9 ]'
 IN RESULT WITH ''.
 ```
+
 ---
 
 # Data Quality Engineering
@@ -187,21 +238,11 @@ Several data quality techniques were implemented during transformation:
 - Standardization of master data attributes
 - Lookup enrichment using master data tables
 
-These transformations ensure reliable and consistent reporting.
-
 ---
 
 # Open ODS View Integration
 
-Open ODS Views are used to integrate external or historical datasets without physically loading them into BW.
-
-Typical use cases include:
-
-- Historical sales data
-- Flat file integrations
-- HANA external tables
-
-Example Object:
+Open ODS Views integrate external or historical datasets without physical loading.
 
 | Object | Purpose |
 |------|---------|
@@ -218,13 +259,17 @@ Composite Providers combine multiple data sources into a unified analytics model
 | ZV_SDHDR6 | Sales Header semantic model |
 | ZV_SDITM4 | Sales Item semantic model |
 
-These objects allow flexible modeling without duplicating data.
+---
+
+## Composite Provider Model
+
+![Composite Provider](images/bw/composite-provider.png)
 
 ---
 
 # Analytics Layer
 
-The final analytics layer exposes the data through **BW Queries and SAP Analytics Cloud dashboards**.
+The final analytics layer exposes the data through **BW Queries**.
 
 ### BW Queries
 
@@ -233,36 +278,42 @@ The final analytics layer exposes the data through **BW Queries and SAP Analytic
 | ZQ_ZV_SDHD6_001 | Sales Header analytics |
 | ZQ_ZV_SDITM4 | Sales Item analytics |
 
-These queries provide insights into:
+---
 
-- Sales Order Quantity
-- Sales Order Value
-- Sales Order Count
+## BW Query
+
+![BW Query](images/reporting/bw-query.png)
 
 ---
 
 # SAP Analytics Cloud Integration
 
-The BW Queries are exposed to **SAP Analytics Cloud using a Live Connection**.
+The BW Queries are consumed through **SAP Analytics Cloud Live Connection**.
 
 Benefits include:
 
 - Real-time analytics
 - No data replication
 - Enterprise security integration
-- Interactive dashboards and stories
+- Interactive dashboards
+
+---
+
+## SAP Analytics Cloud Dashboard
+
+![SAC Dashboard](images/sac/sac-dashboard.png)
 
 ---
 
 # Process Automation
 
-Data pipelines can be automated using **SAP BW Process Chains**.
+Data pipelines are automated using **SAP BW Process Chains**.
 
-Typical automated processes include:
+Typical processes include:
 
 - Delta data loads
 - ADSO activation
-- Index rebuilding
+- Index rebuild
 - Query cache refresh
 
 ---
@@ -281,9 +332,10 @@ sap-bw4hana-sales-analytics
 │
 ├── images
 │   ├── architecture
-│   ├── bw-modeling
+│   ├── bw
 │   ├── transformations
 │   ├── reporting
+│   └── sac
 │
 └── src
     ├── cds
@@ -306,5 +358,7 @@ sap-bw4hana-sales-analytics
 ---
 
 # Author
+
+**Daniel Mate**
 
 Enterprise SAP Data Engineering Portfolio Project
