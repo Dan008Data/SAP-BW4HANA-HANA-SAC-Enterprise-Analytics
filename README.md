@@ -1,5 +1,11 @@
 # SAP-BW4HANA-HANA-SAC-Enterprise-Analytics
 
+![SAP](https://img.shields.io/badge/SAP-BW%2F4HANA-blue)
+![HANA](https://img.shields.io/badge/SAP-HANA-red)
+![CDS](https://img.shields.io/badge/ABAP-CDS%20Views-green)
+![ODP](https://img.shields.io/badge/Data%20Extraction-ODP-orange)
+![SAC](https://img.shields.io/badge/Analytics-SAP%20Analytics%20Cloud-purple)
+
 Enterprise SAP BW/4HANA implementation for **Sales Order Quantity and Value analytics** with real-time **SAP Analytics Cloud dashboards**.
 
 Features:
@@ -14,20 +20,37 @@ Delivered **22x faster queries for 5,000+ users**.
 
 ---
 
-## Enterprise SAP Data Engineering Project
+# Table of Contents
+
+- [Project Overview](#project-overview)
+- [Project Highlights](#project-highlights)
+- [Business Scenario](#business-scenario)
+- [Technology Stack](#technology-stack)
+- [High-Level Architecture](#high-level-architecture)
+- [LSA++ Data Architecture](#lsa-data-architecture)
+- [ADSO Data Model](#adso-data-model)
+- [Data Extraction](#data-extraction)
+- [Data Engineering Implementation](#data-engineering-implementation)
+- [Transformation Rules](#transformation-rules)
+- [Semantic Data Layer](#semantic-data-layer)
+- [Analytics Layer](#analytics-layer)
+- [SAP Analytics Cloud Integration](#sap-analytics-cloud-integration)
+- [Process Automation](#process-automation)
+- [Repository Structure](#repository-structure)
+- [Key Skills Demonstrated](#key-skills-demonstrated)
 
 ---
 
-## Project Overview
+# Project Overview
 
 This repository demonstrates an **enterprise-level SAP BW/4HANA data warehouse implementation for Sales Analytics**.
 
 The solution follows **SAP's LSA++ (Layered Scalable Architecture)** and integrates transactional and master data from **SAP S/4HANA Sales & Distribution (SD)** using modern extraction techniques such as:
 
-- ABAP CDS Views  
-- Operational Data Provisioning (ODP)  
-- SAP BW/4HANA Data Modeling  
-- SAP HANA SQLScript & AMDP  
+- ABAP CDS Views
+- Operational Data Provisioning (ODP)
+- SAP BW/4HANA Data Modeling
+- SAP HANA SQLScript & AMDP
 
 The project models **Sales Header and Sales Item data** and delivers analytical reporting through:
 
@@ -38,7 +61,7 @@ The architecture reflects the type of solutions delivered by enterprise consulti
 
 ---
 
-## Project Highlights
+# Project Highlights
 
 - Implemented LSA++ architecture in SAP BW/4HANA
 - Developed CDS-based extraction from S/4HANA
@@ -81,83 +104,81 @@ Organizations require consolidated reporting across multiple **sales dimensions*
 |---|---|
 | SAP BW/4HANA | Enterprise Data Warehouse |
 | SAP HANA | In-memory database |
-| ABAP CDS Views | Data extraction and modeling |
-| Operational Data Provisioning (ODP) | Delta extraction framework |
-| ADSO | Persistent storage layer |
-| Composite Providers | Semantic data modeling |
-| BW Queries | Analytical reporting |
-| SAP Analytics Cloud | Visualization dashboards |
+| ABAP CDS Views | Data extraction |
+| Operational Data Provisioning | Delta loading |
+| ADSO | Data persistence |
+| Composite Providers | Semantic modeling |
+| BW Queries | Reporting |
+| SAP Analytics Cloud | Visualization |
 
 ---
 
 # High-Level Architecture
 
-![Architecture](https://github.com/user-attachments/assets/4da65765-9a6e-4ed9-a21e-3ab29fd9710b)
+![Architecture](images/architecture/sap_bw4hana_architecture.png)
+
+---
+
+## LSA++ Dataflow
+
+![LSA Dataflow](images/architecture/sale-item-lsa-dataflow.png)
+
+![Sales Header Dataflow](images/architecture/sales-header-lsa-part1.png)
 
 ---
 
 # LSA++ Data Architecture
 
-The solution follows SAP's **LSA++ (Layered Scalable Architecture)** to ensure scalable and maintainable enterprise data pipelines.
-
 | Layer | Description | Objects |
 |------|-------------|---------|
 | Source Layer | SAP transactional data | VBAK, VBAP |
-| Extraction Layer | CDS-based extraction | ZI_SALES_HDR_FULL, ZI_SALES_ITM_DAN |
-| Staging Layer | Raw data persistence | ZS_SDHDR5, ZS_SDITM4 |
-| Harmonization Layer | Data standardization | ZD_ISHDR5, ZD_ISITM4 |
-| Reporting Layer | Analytics ready data | ZD_SDHDR6, ZD_SDITM4 |
-| Semantic Layer | Virtual data model | ZV_SDHDR6, ZV_SDITM4 |
-| Analytics Layer | Reporting | ZQ_ZV_SDHD6_001, ZQ_ZV_SDITM4 |
+| Extraction Layer | CDS extraction | ZI_SALES_HDR_FULL |
+| Staging Layer | Raw data persistence | ZS_SDHDR5 |
+| Harmonization Layer | Data standardization | ZD_ISHDR5 |
+| Reporting Layer | Analytics-ready data | ZD_SDHDR6 |
+| Semantic Layer | Virtual data model | ZV_SDHDR6 |
+| Analytics Layer | Reporting | ZQ_ZV_SDHD6_001 |
 
 ---
 
-## ADSO Data Model
+# ADSO Data Model
 
-![Sales Item Staging ADSO](images/bw/sales-item-staging-adso.png)
+### Staging ADSO
 
-![Sales Item Reporting ADSO](images/bw/sales-item-reporting-adso.png)
+![ADSO Staging](images/bw/adso-staging.png)
+
+### Reporting ADSO
+
+![ADSO Reporting](images/bw/adso-reporting.png)
 
 ---
 
-# Source ERP Tables
+# Data Extraction
+
+## Source ERP Tables
 
 | Table | Description |
 |------|-------------|
-| VBAK | Sales Document Header |
-| VBAP | Sales Document Item |
+| VBAK | Sales Header |
+| VBAP | Sales Item |
 | KNA1 | Customer Master |
 | MARA | Material Master |
-| T001 | Company Code |
 
 ---
 
-# CDS View Extraction Objects
-
-| CDS View | Purpose |
-|---|---|
-| ZI_SALES_HDR_FULL | Sales Header extraction |
-| ZI_SALES_ITM_DAN | Sales Item extraction |
-
----
-
-# Example CDS View
+## CDS Extraction
 
 ```sql
 @AbapCatalog.sqlViewName: 'ZV_SALES_HDR'
 @Analytics.dataCategory: #FACT
-@AccessControl.authorizationCheck: #NOT_REQUIRED
 
 define view ZI_SALES_HDR_FULL
 as select from vbak
 {
-    key vbeln as SalesDocument,
-    erdat as CreatedDate,
-    kunnr as Customer,
-    vkorg as SalesOrganization,
-    vtweg as DistributionChannel,
-    netwr as NetValue,
-    waerk as Currency
+ key vbeln as SalesDocument,
+ erdat as CreatedDate,
+ kunnr as Customer,
+ vkorg as SalesOrganization
 }
 ```
 
@@ -165,31 +186,26 @@ as select from vbak
 
 # Data Engineering Implementation
 
-The project includes several enterprise-level data engineering components implemented in SAP BW/4HANA.
+Key techniques used:
 
-### Key Techniques
-
-- ABAP CDS Views for modern data extraction
-- Delta-enabled loading using ODP
-- ADSO-based data persistence
-- Composite Providers for semantic modeling
-- HANA pushdown transformations using AMDP
+- CDS extraction
+- Delta loading via ODP
+- ADSO persistence layers
+- Composite Providers
+- AMDP pushdown transformations
 - Data cleansing routines
-- Lookup transformations for master data enrichment
 
 ---
 
-## Transformation Rules
+# Transformation Rules
 
-![Transformation Rules](images/transformations/transformation-rules.png)
+![AMDP Transformation](images/transformations/amdp-base-unit.png)
 
-![AMDP Transformation](images/transformations/amdp-base-unit-conversion.png)
+![Lookup Transformation](images/transformations/lookup-country.png)
 
 ---
 
-# AMDP Transformation Example
-
-High-performance transformation logic implemented using **AMDP (ABAP Managed Database Procedures)**.
+## AMDP Example
 
 ```sql
 METHOD base_unit_conversion
@@ -199,9 +215,8 @@ LANGUAGE SQLSCRIPT
 OPTIONS READ-ONLY.
 
 outtab =
-SELECT
-    material,
-    orderquantity * conversion_factor AS base_quantity
+SELECT material,
+orderquantity * conversion_factor AS base_quantity
 FROM :intab;
 
 ENDMETHOD.
@@ -209,97 +224,56 @@ ENDMETHOD.
 
 ---
 
-# Lookup Transformation Example
-
-```sql
-SELECT land1
-INTO RESULT
-FROM kna1
-WHERE kunnr = SOURCE_FIELDS-customer.
-```
-
----
-
-# Data Cleansing Routine
-
-```abap
-REPLACE ALL OCCURRENCES OF REGEX '[^A-Za-z0-9 ]'
-IN RESULT WITH ''.
-```
-
----
-
-# Data Quality Engineering
-
-Several data quality techniques were implemented during transformation:
-
-- Base unit conversion using AMDP
-- Removal of special characters
-- Standardization of master data attributes
-- Lookup enrichment using master data tables
-
----
-
-# Open ODS View Integration
-
-Open ODS Views integrate external or historical datasets without physical loading.
-
-| Object | Purpose |
-|------|---------|
-| ZS_ODITM4 | External Sales Item data integration |
-
----
-
 # Semantic Data Layer
 
-Composite Providers combine multiple data sources into a unified analytics model.
+Composite Providers combine multiple datasets.
 
 | Composite Provider | Description |
 |---|---|
-| ZV_SDHDR6 | Sales Header semantic model |
-| ZV_SDITM4 | Sales Item semantic model |
+| ZV_SDHDR6 | Sales Header |
+| ZV_SDITM4 | Sales Item |
 
 ---
 
-## Composite Provider Model
+## Composite Provider
 
 ![Composite Provider](images/bw/composite-provider.png)
+
+![Composite Provider Preview](images/bw/composite-provider-preview.png)
 
 ---
 
 # Analytics Layer
 
-The final analytics layer exposes the data through **BW Queries**.
-
-### BW Queries
+BW Queries provide reporting metrics.
 
 | Query | Description |
 |---|---|
-| ZQ_ZV_SDHD6_001 | Sales Header analytics |
-| ZQ_ZV_SDITM4 | Sales Item analytics |
+| ZQ_ZV_SDHD6_001 | Sales Header |
+| ZQ_ZV_SDITM4 | Sales Item |
 
 ---
 
 ## BW Query
 
-![BW Query](images/reporting/bw-query.png)
+![BW Query](images/reporting/bw-query-sales.png)
 
 ---
 
 # SAP Analytics Cloud Integration
 
-The BW Queries are consumed through **SAP Analytics Cloud Live Connection**.
+Live connection from SAC to BW/4HANA.
 
-Benefits include:
+Benefits:
 
 - Real-time analytics
 - No data replication
-- Enterprise security integration
+- Enterprise security
 - Interactive dashboards
 
 ---
 
-## SAP Analytics Cloud Dashboard
+## SAC Dashboard
 
 ![SAC Dashboard](images/sac/sac-dashboard.png)
 
@@ -307,9 +281,7 @@ Benefits include:
 
 # Process Automation
 
-Data pipelines are automated using **SAP BW Process Chains**.
-
-Typical processes include:
+SAP BW Process Chains automate:
 
 - Delta data loads
 - ADSO activation
@@ -324,23 +296,9 @@ Typical processes include:
 sap-bw4hana-sales-analytics
 │
 ├── README.md
-│
 ├── docs
-│   ├── architecture.md
-│   ├── data-model.md
-│   ├── transformations.md
-│
 ├── images
-│   ├── architecture
-│   ├── bw
-│   ├── transformations
-│   ├── reporting
-│   └── sac
-│
-└── src
-    ├── cds
-    ├── transformations
-    └── bw-objects
+├── src
 ```
 
 ---
@@ -351,9 +309,8 @@ sap-bw4hana-sales-analytics
 - Enterprise Data Warehouse Architecture
 - ABAP CDS Development
 - SAP HANA SQLScript & AMDP
-- ETL Data Engineering
+- Data Engineering
 - SAP Analytics Cloud Integration
-- Data Quality & Data Governance
 
 ---
 
