@@ -26,13 +26,13 @@ The architecture reflects the type of solutions delivered by enterprise consulti
 ---
 ## Project Highlights
 
-• Implemented LSA++ architecture in SAP BW/4HANA  
-• Developed CDS-based extraction from S/4HANA  
-• Implemented delta loading using ODP  
-• Built ADSO staging and reporting layers  
-• Developed AMDP transformations for HANA pushdown  
-• Modeled Composite Providers for semantic analytics  
-• Delivered reporting through SAP Analytics Cloud
+- Implemented LSA++ architecture in SAP BW/4HANA
+- Developed CDS-based extraction from S/4HANA
+- Implemented delta loading using ODP
+- Built ADSO staging and reporting layers
+- Developed AMDP transformations for HANA pushdown
+- Modeled Composite Providers for semantic analytics
+- Delivered reporting through SAP Analytics Cloud
 
 # Business Scenario
 
