@@ -66,7 +66,6 @@ Organizations require consolidated reporting across multiple **sales dimensions*
 # High-Level Architecture
 <img width="1264" height="842" alt="Gemini_Generated_Image_v3txmlv3txmlv3tx" src="https://github.com/user-attachments/assets/4da65765-9a6e-4ed9-a21e-3ab29fd9710b" />
 
-
 ---
 
 # Source ERP Tables
@@ -108,7 +107,33 @@ as select from vbak
     netwr as NetValue,
     waerk as Currency
 }
+```
+# Data Engineering Implementation
+The project includes several enterprise-level data engineering components implemented in SAP BW/4HANA.
+Key Techniques
+•	ABAP CDS Views for modern data extraction
+•	Delta-enabled loading using ODP
+•	ADSO-based data persistence
+•	Composite Providers for semantic modeling
+•	HANA pushdown transformations using AMDP
+•	Data cleansing routines
+•	Lookup transformations for master data enrichment
 
+# AMDP Transformation Example
+High-performance transformation logic implemented using AMDP (ABAP Managed Database Procedures).
+Base Unit Conversion
 
+METHOD base_unit_conversion
+BY DATABASE PROCEDURE
+FOR HDB
+LANGUAGE SQLSCRIPT
+OPTIONS READ-ONLY.
 
+outtab =
+SELECT
+    material,
+    orderquantity * conversion_factor AS base_quantity
+FROM :intab;
+
+ENDMETHOD.
 
