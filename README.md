@@ -66,54 +66,18 @@ Organizations require consolidated reporting across multiple **sales dimensions*
 # High-Level Architecture
 <img width="1264" height="842" alt="Gemini_Generated_Image_v3txmlv3txmlv3tx" src="https://github.com/user-attachments/assets/4da65765-9a6e-4ed9-a21e-3ab29fd9710b" />
 
----
+# Data Engineering Implementation
+The project includes several enterprise-level data engineering components implemented in SAP BW/4HANA.
+Key Techniques
+•	ABAP CDS Views for modern data extraction
+•	Delta-enabled loading using ODP
+•	ADSO-based data persistence
+•	Composite Providers for semantic modeling
+•	HANA pushdown transformations using AMDP
+•	Data cleansing routines
+•	Lookup transformations for master data enrichment
 
-# Source ERP Tables
-
-| Table | Description |
-|------|-------------|
-| VBAK | Sales Document Header |
-| VBAP | Sales Document Item |
-| KNA1 | Customer Master |
-| MARA | Material Master |
-| T001 | Company Code |
-
----
-
-# CDS View Extraction Objects
-
-| CDS View | Purpose |
-|---|---|
-| ZI_SALES_HDR_FULL | Sales Header extraction |
-| ZI_SALES_ITM_DAN | Sales Item extraction |
-
----
-
-# Example CDS View
-
-```sql
-@AbapCatalog.sqlViewName: 'ZV_SALES_HDR'
-@Analytics.dataCategory: #FACT
-@AccessControl.authorizationCheck: #NOT_REQUIRED
-
-define view ZI_SALES_HDR_FULL
-as select from vbak
-{
-    key vbeln as SalesDocument,
-    erdat as CreatedDate,
-    kunnr as Customer,
-    vkorg as SalesOrganization,
-    vtweg as DistributionChannel,
-    netwr as NetValue,
-    waerk as Currency
-}
-
-# CDS View Extraction Objects
-
-| CDS View | Purpose |
-|---|---|
-| ZI_SALES_HDR_FULL | Sales Header extraction |
-| ZI_SALES_ITM_DAN | Sales Item extraction |
-
-
+# AMDP Transformation Example
+High-performance transformation logic implemented using AMDP (ABAP Managed Database Procedures).
+Base Unit Conversion
 
