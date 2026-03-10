@@ -1,4 +1,4 @@
-![Screenshot_20260218_180512_VLC (1) (1)](https://github.com/user-attachments/assets/89e54eca-20bb-4d4d-b8fb-87d27d46e3cb)# SAP-BW4HANA-HANA-SAC-Enterprise-Analytics
+# SAP-BW4HANA-HANA-SAC-Enterprise-Analytics
 
 ![SAP](https://img.shields.io/badge/SAP-BW%2F4HANA-blue)
 ![HANA](https://img.shields.io/badge/SAP-HANA-red)
