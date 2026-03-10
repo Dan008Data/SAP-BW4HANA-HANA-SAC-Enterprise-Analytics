@@ -122,7 +122,7 @@ Key Techniques
 # AMDP Transformation Example
 High-performance transformation logic implemented using AMDP (ABAP Managed Database Procedures).
 Base Unit Conversion
-
+```
 METHOD base_unit_conversion
 BY DATABASE PROCEDURE
 FOR HDB
@@ -136,4 +136,4 @@ SELECT
 FROM :intab;
 
 ENDMETHOD.
-
+```
