@@ -137,3 +137,17 @@ FROM :intab;
 
 ENDMETHOD.
 ```
+# Lookup Transformation Example
+Lookup logic used to enrich transactional data with master data attributes.
+```
+SELECT land1
+INTO RESULT
+FROM kna1
+WHERE kunnr = SOURCE_FIELDS-customer.
+```
+# Data Cleansing Routine
+Data quality rules implemented to remove invalid characters and standardize data.
+```
+REPLACE ALL OCCURRENCES OF REGEX '[^A-Za-z0-9 ]'
+IN RESULT WITH ''.
+```
