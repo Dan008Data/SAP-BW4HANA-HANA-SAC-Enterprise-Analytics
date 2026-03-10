@@ -111,13 +111,13 @@ as select from vbak
 # Data Engineering Implementation
 The project includes several enterprise-level data engineering components implemented in SAP BW/4HANA.
 Key Techniques
-•	ABAP CDS Views for modern data extraction
-•	Delta-enabled loading using ODP
-•	ADSO-based data persistence
-•	Composite Providers for semantic modeling
-•	HANA pushdown transformations using AMDP
-•	Data cleansing routines
-•	Lookup transformations for master data enrichment
+- ABAP CDS Views for modern data extraction
+- Delta-enabled loading using ODP
+- ADSO-based data persistence
+- Composite Providers for semantic modeling
+- HANA pushdown transformations using AMDP
+- Data cleansing routines
+- Lookup transformations for master data enrichment
 
 # AMDP Transformation Example
 High-performance transformation logic implemented using AMDP (ABAP Managed Database Procedures).
